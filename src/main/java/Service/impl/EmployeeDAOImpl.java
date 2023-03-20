@@ -1,98 +1,65 @@
 package Service.impl;
 
+import Configuration.HibernateSessionFactoryUtil;
 import Model.Employee;
 import Service.EmployeeDAO;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
-    final String user = "postgres";
-    final String password = "Couldlie";
-    final String url = "jdbc:postgresql://localhost:5433/skypro";
-    final Connection connection  = DriverManager.getConnection(url, user, password);
-
-    public EmployeeDAOImpl() throws SQLException {
-    }
     @Override
     public void addEmployee(Employee employee) {
-        try (PreparedStatement statement = connection.prepareStatement("INSERT INTO employee (first_name, last_name, gender, age, living_city_id) VALUES ((?),(?),(?),(?),(?))")) {
-            statement.setString(1, employee.getFirstName());
-            statement.setString(2, employee.getLastName());
-            statement.setString(3, employee.getGender());
-            statement.setInt(4, employee.getAge());
-            statement.setInt(5, employee.getLivingCityId());
-            // С помощью метода executeQuery отправляем запрос к базе
-            statement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        // В ресурсах блока try создаем объект сессии с помощью нашего конфиг-файла
+        // И открываем сессию
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            // Создаем транзакцию и начинаем ее
+            Transaction transaction = session.beginTransaction();
+            // вызываем на объекте сессии метод save
+            // данный метод внутри себя содержит необходимый запрос к базе
+            // для создания новой строки
+            session.save(employee);
+            // Выполняем коммит, то есть сохраняем изменения,
+            // которые совершили в рамках транзакции
+            transaction.commit();
         }
     }
 
     @Override
-    public Employee getEmployeeById(int id) throws SQLException {
-        Employee employee = new Employee();
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee INNER JOIN city ON employee.living_city_id = city.city_id WHERE id = (?)")) {
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                employee.setFirstName(resultSet.getString("first_name"));
-                employee.setLastName(resultSet.getString("last_name"));
-                employee.setGender(resultSet.getString("gender"));
-                employee.setAge(resultSet.getInt("age"));
-                employee.setLivingCity(resultSet.getString("city_name"));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return employee;
+    public Employee getEmployeeById(int id) {
+        // С помощью конфиг-файла получаем сессию, открываем ее
+        // и через метод get получаем объект
+        // В параметре метода get нужно указать объект какого класса нам нужен
+        // и его id
+        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(Employee.class, id);
     }
 
     @Override
     public List<Employee> getAllEmployees() {
-        List<Employee> list = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee INNER JOIN city ON city.city_id = employee.living_city_id")) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String firstName = resultSet.getString("first_name");
-                String last_name = resultSet.getString("last_name");
-                String gender = resultSet.getString("gender");
-                int age = resultSet.getInt("age");
-                String livingCity = resultSet.getString("city_name");
-
-                Employee employee = new Employee(id, firstName, last_name, gender, age, livingCity);
-                list.add(employee);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return list;
+        List<Employee> employees = (List<Employee>) HibernateSessionFactoryUtil
+                .getSessionFactory().openSession().createQuery("From Employee").list();
+        return employees;
     }
 
     @Override
-    public void editEmployee(int id, String first_name, String last_name, String gender, int age) {
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE employee SET first_name = (?), last_name = (?), gender = (?), age = (?) WHERE id = (?)")) {
-            statement.setString(1, first_name);
-            statement.setString(2, last_name);
-            statement.setString(3, gender);
-            statement.setInt(4, age);
-            statement.setInt(5, id);
-            statement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public void editEmployee(int id, Employee employee) {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            // Для обновления данных нужно передать в конструктор
+            // объект с актуальными данными
+            session.update(employee);
+            transaction.commit();
         }
     }
 
     @Override
     public void deleteEmployee(int id) {
-        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM employee WHERE id = (?)")) {
-            statement.setInt(1, id);
-
-            ResultSet resultSet = statement.executeQuery();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            // Для удаления объекта из таблицы нужно передать его в метод delete
+            session.delete(getEmployeeById(id));
+            transaction.commit();
         }
     }
 }

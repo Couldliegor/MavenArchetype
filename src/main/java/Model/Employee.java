@@ -3,32 +3,41 @@ package Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.persistence.*;
+
 @Data
 @AllArgsConstructor
+@Entity
+@Table(name = "employee")
 public class Employee {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "id")
     private int id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "gender")
     private String gender;
+    @Column(name = "age")
     private int age;
+    @Column(name = "living_city_id")
     private int livingCityId;
-    private String livingCity;
 
-    public Employee(String firstName, String lastName, String gender, int age, String livingCity) {
+    public Employee(String firstName, String lastName, String gender, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.livingCity = livingCity;
     }
 
-    public Employee(int id, String firstName, String lastName, String gender, int age, String livingCity) {
+    public Employee(int id, String firstName, String lastName, String gender, int age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
-        this.livingCity = livingCity;
     }
 
     public Employee(String firstName, String lastName, String gender, int age, int livingCityId) {
@@ -42,6 +51,7 @@ public class Employee {
     public Employee() {
 
     }
+
     public int getId() {
         return id;
     }
