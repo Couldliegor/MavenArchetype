@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -24,6 +26,17 @@ public class Employee {
     private int age;
     @Column(name = "living_city_id")
     private int livingCityId;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<City> cityList;
+
+    public Employee(int id, String firstName, String lastName, String gender, int age, int livingCityId) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.age = age;
+        this.livingCityId = livingCityId;
+    }
 
     public Employee(String firstName, String lastName, String gender, int age) {
         this.firstName = firstName;
@@ -51,6 +64,7 @@ public class Employee {
     public Employee() {
 
     }
+
 
     public int getId() {
         return id;
@@ -98,5 +112,18 @@ public class Employee {
 
     public void setLivingCityId(int livingCityId) {
         this.livingCityId = livingCityId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id && age == employee.age && livingCityId == employee.livingCityId && Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName) && Objects.equals(gender, employee.gender);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, gender, age, livingCityId);
     }
 }
