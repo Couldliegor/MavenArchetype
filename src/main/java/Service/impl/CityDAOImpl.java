@@ -28,14 +28,17 @@ public class CityDAOImpl implements CityDAO {
 
     @Override
     public City getCityById(int id) {
-        return HibernateSessionFactoryUtil.getSessionFactory().openSession().get(City.class, id);
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            return session.get(City.class, id);
+        }
     }
 
     @Override
     public List<City> getAllCities() {
-        List<City> cityList = (List<City>) HibernateSessionFactoryUtil
-                .getSessionFactory().openSession().createQuery("From City").list();
-        return cityList;
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            List<City> cityList = session.createQuery("From City", City.class).list();
+            return cityList;
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,9 +18,8 @@ public class City {
     private int id;
     @Column(name = "city_name")
     private String cityName;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "living_city_id")
-    private Employee employee;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "City")
+    private List<Employee> employee;
 
     @Override
     public boolean equals(Object o) {
@@ -48,14 +48,6 @@ public class City {
 
     public void setCityName(String cityName) {
         this.cityName = cityName;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
     }
 
     public City(String cityName) {

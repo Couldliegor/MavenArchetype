@@ -9,7 +9,6 @@ import org.hibernate.cfg.Configuration;
 //вынести подключение к базе в отдельный конфигурационный класс:
 public class HibernateSessionFactoryUtil {
     private static SessionFactory sessionFactory;
-
     public HibernateSessionFactoryUtil() {
     }
 

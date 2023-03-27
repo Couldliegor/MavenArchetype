@@ -1,14 +1,11 @@
 package Model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Data
-@AllArgsConstructor
 @Entity
 @Table(name = "employee")
 public class Employee {
@@ -26,8 +23,9 @@ public class Employee {
     private int age;
     @Column(name = "living_city_id")
     private int livingCityId;
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<City> cityList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn()
+    private City city;
 
     public Employee(int id, String firstName, String lastName, String gender, int age, int livingCityId) {
         this.id = id;
