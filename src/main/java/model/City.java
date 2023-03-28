@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,10 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "city_id")
     private int id;
-    @Column(name = "city_name")
+    @Column(name = "city_name", length = 50)
     private String cityName;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "сity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+//    @ToString.Exclude
     private List<Employee> employee;
 
     @Override

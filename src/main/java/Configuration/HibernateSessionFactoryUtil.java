@@ -1,7 +1,7 @@
 package Configuration;
 
-import Model.City;
-import Model.Employee;
+import model.City;
+import model.Employee;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -21,7 +21,7 @@ public class HibernateSessionFactoryUtil {
                 StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
                 sessionFactory = configuration.buildSessionFactory(builder.build());
             } catch (Exception e) {
-                System.out.println("Исключение!");
+                System.out.println(e);
             }
         }
         return sessionFactory;

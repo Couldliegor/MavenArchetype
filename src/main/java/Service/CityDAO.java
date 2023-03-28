@@ -1,11 +1,11 @@
 package Service;
 
-import Model.City;
+import model.City;
 
 import java.util.List;
 
 public interface CityDAO {
-    void addEmployee(City city);
+    void addCity(City city);
 
     City getCityById(int id);
 

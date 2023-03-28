@@ -1,5 +1,5 @@
 import Configuration.HibernateSessionFactoryUtil;
-import Model.Employee;
+import model.Employee;
 import Service.EmployeeDAO;
 import Service.impl.EmployeeDAOImpl;
 import org.junit.jupiter.api.Test;
@@ -18,8 +18,8 @@ public class EmployeeDAOTest {
     HibernateSessionFactoryUtil hibernateSessionFactoryUtil;
 
     EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-    private static final Employee EMPLOYEE_WHICH_IS_IN_DATABASE = new Employee(18, "Abdul", "Lolsl", "Male", 19, 1);
-    private static final Employee EMPLOYEE_NEED_TO_RETURN_FROM_DATABASE = new Employee(11, "Zlata", "Morova", "Female", 19, 1);
+    private static final Employee EMPLOYEE_WHICH_IS_IN_DATABASE = new Employee(18, "Abdul", "Lolsl", "Male", 19);
+    private static final Employee EMPLOYEE_NEED_TO_RETURN_FROM_DATABASE = new Employee(11, "Zlata", "Morova", "Female", 19);
 
     @Test
     public void shouldReturnEmployeeById() {

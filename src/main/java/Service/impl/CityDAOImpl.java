@@ -1,7 +1,7 @@
 package Service.impl;
 
 import Configuration.HibernateSessionFactoryUtil;
-import Model.City;
+import model.City;
 import Service.CityDAO;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CityDAOImpl implements CityDAO {
     @Override
-    public void addEmployee(City city) {
+    public void addCity(City city) {
         // В ресурсах блока try создаем объект сессии с помощью нашего конфиг-файла
         // И открываем сессию
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
@@ -36,7 +36,9 @@ public class CityDAOImpl implements CityDAO {
     @Override
     public List<City> getAllCities() {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            List<City> cityList = session.createQuery("From City", City.class).list();
+            Transaction transaction = session.beginTransaction();
+            List<City> cityList = session.createQuery("FROM City c JOIN FETCH c.employee", City.class).list();
+            transaction.commit();
             return cityList;
         }
     }

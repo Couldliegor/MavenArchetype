@@ -1,7 +1,7 @@
 package Service.impl;
 
 import Configuration.HibernateSessionFactoryUtil;
-import Model.Employee;
+import model.Employee;
 import Service.EmployeeDAO;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

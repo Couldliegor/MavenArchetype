@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import lombok.Data;
 
@@ -14,23 +14,24 @@ public class Employee {
     @OrderColumn
     @Column(name = "id")
     private int id;
-    @Column(name = "first_name")
+    @Column(name = "first_name", length = 20)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", length = 20)
     private String lastName;
-    @Column(name = "gender")
+    @Column(name = "gender", length = 50)
     private String gender;
     @Column(name = "age")
     private int age;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "iving_city_id")
+    @JoinColumn(name = "city_id")
     private City city;
 
-    public Employee(String firstName, String lastName, String gender, int age) {
+    public Employee(String firstName, String lastName, String gender, int age, City city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
         this.age = age;
+        this.city = city;
     }
 
     public Employee(int id, String firstName, String lastName, String gender, int age) {
