@@ -13,12 +13,13 @@ import java.util.Objects;
 @NoArgsConstructor
 public class City {
     @Id
+    @OrderColumn
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "city_id")
     private int id;
     @Column(name = "city_name")
     private String cityName;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "City")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "сity")
     private List<Employee> employee;
 
     @Override

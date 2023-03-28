@@ -1,6 +1,7 @@
 import Configuration.HibernateSessionFactoryUtil;
 import Model.Employee;
 import Service.EmployeeDAO;
+import Service.impl.EmployeeDAOImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -16,8 +17,7 @@ public class EmployeeDAOTest {
     @Mock
     HibernateSessionFactoryUtil hibernateSessionFactoryUtil;
 
-    @Mock
-    EmployeeDAO employeeDAO;
+    EmployeeDAO employeeDAO = new EmployeeDAOImpl();
     private static final Employee EMPLOYEE_WHICH_IS_IN_DATABASE = new Employee(18, "Abdul", "Lolsl", "Male", 19, 1);
     private static final Employee EMPLOYEE_NEED_TO_RETURN_FROM_DATABASE = new Employee(11, "Zlata", "Morova", "Female", 19, 1);
 
