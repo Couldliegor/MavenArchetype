@@ -15,7 +15,7 @@ public class Application {
         cityDAO.addCity(city);
         Employee employee12 = new Employee("Hasbek", "Abdurozik", "Male", 18, city);
         employee.addEmployee(employee12);
-        employee.editEmployee(2, employee12);
+        employee.editEmployee(employee12);
         employee.deleteEmployee(13);
         System.out.println(employee.getEmployeeById(7));
         System.out.println(cityDAO.getAllCities());

@@ -44,7 +44,7 @@ public class CityDAOImpl implements CityDAO {
     }
 
     @Override
-    public void editCity(int id, City city) {
+    public void editCity(City city) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
             // Для обновления данных нужно передать в конструктор

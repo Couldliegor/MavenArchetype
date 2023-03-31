@@ -11,7 +11,7 @@ public interface CityDAO {
 
     List<City> getAllCities();
 
-    void editCity(int id, City city);
+    void editCity(City city);
 
     void deleteCity(int id);
 }
